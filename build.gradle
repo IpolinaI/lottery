@@ -1,0 +1,80 @@
+plugins {
+	id 'java'
+	id 'idea'
+	id 'org.springframework.boot' version '3.0.6'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id 'org.openapi.generator' version '6.5.0'
+}
+
+group = 'com.demo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+compileJava {
+	options.compilerArgs += "-Amapstruct.unmappedTargetPolicy=ERROR"
+}
+
+ext {
+	mapstructVersion = '1.5.4.Final'
+	lombokMapstructBindingVersion = '0.2.0'
+	openApiVersion = '2.1.0'
+	jakartaAnnotationApiVersion = '2.1.1'
+	hibernateValidatorVersion = '8.0.0.Final'
+	testcontainersVersion = '1.18.0'
+}
+
+configurations {
+	testIntegrationRuntimeOnly.extendsFrom testRuntimeOnly
+	testIntegrationImplementation.extendsFrom testImplementation
+	testIntegrationAnnotationProcessor.extendsFrom annotationProcessor
+
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+sourceSets {
+	testIntegration {
+		java {
+			compileClasspath += main.output
+			runtimeClasspath += main.output
+			srcDir file('src/testIntegration/java')
+		}
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:$openApiVersion"
+	implementation 'org.liquibase:liquibase-core'
+	implementation 'org.postgresql:postgresql'
+	implementation "org.mapstruct:mapstruct:$mapstructVersion"
+	implementation "jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion"
+	implementation "org.hibernate.validator:hibernate-validator:$hibernateValidatorVersion"
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
+	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:$lombokMapstructBindingVersion"
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	testIntegrationImplementation "org.testcontainers:junit-jupiter:$testcontainersVersion"
+	testIntegrationImplementation "org.testcontainers:postgresql:$testcontainersVersion"
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+task testIntegration(type: Test) {
+	useJUnitPlatform()
+}
+
+check.dependsOn testIntegration

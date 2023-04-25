@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: 20230421-setup.yml
+      relativeToChangelogFile: true
