@@ -5,7 +5,7 @@
 2. Connect to database in container using credentials from ./local_env/docker-compose.yml
 3. Start the application with `gradlew bootRun --args='--spring.profiles.active=dev'` or using IDE
 4. Run database script ./local_env/data.sql to create admin user
-5. Now you can access the API on http://localhost/8080, swagger may be accessed on http://localhost/8080/swagger/index.html
+5. Now you can access the API on http://localhost:8080, swagger may be accessed on http://localhost:8080/swagger-ui/index.html
 
 ## App functionality:
 1. To start work with the app you need to create a lottery entity through POST /api/lotteries endpoint using the admin user(his credentials are in ./local_env/data.sql)
