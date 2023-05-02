@@ -1,6 +1,7 @@
 package com.demo.lottery;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 @Testcontainers
 @SpringBootTest
+@AutoConfigureMockMvc
 public class BaseIntegrationTest {
     public static final PostgreSQLContainer<?> POSTGRES_CONTAINER =
             new PostgreSQLContainer<>("library/postgres:12-alpine")
